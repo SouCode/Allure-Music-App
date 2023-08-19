@@ -13,3 +13,5 @@ web-build/
 .env
 # macOS
 .DS_Store
+
+src/redux/services/shazamCore.js

@@ -12,11 +12,13 @@ import "swiper/css";
 import "swiper/css/free-mode";
 
 const TopChartCard = ({ song, i }) => (
-  <div className="w-full flex flex-row items-center hover:bg-[#4c426e] py-2 p-4
-  rounded-lg cursor-pointer mb-2">
+  <div
+    className="w-full flex flex-row items-center hover:bg-[#4c426e] py-2 p-4
+  rounded-lg cursor-pointer mb-2"
+  >
     {song.title}
   </div>
-)
+);
 
 const TopPlay = () => {
   const dispatch = useDispatch();
@@ -55,12 +57,43 @@ const TopPlay = () => {
 
         <div className="mt-4 flex flex-col gap-1">
           {TopPlays?.map((song, i) => (
-            <TopChartCard 
-              key={song.key} 
-              song={song} 
-              i={i} />
+            <TopChartCard key={song.key} song={song} i={i} />
           ))}
         </div>
+      </div>
+
+      <div className="w-full flex flex-col mt-8">
+        <div className="flex flex-row justify-between items-center">
+          <h2 className="text-white font-bold text-2xl">Top Artists</h2>
+          <Link to="/top-artists">
+            <p className="text-gray-300 text-base cursor-pointer">See more</p>
+          </Link>
+        </div>
+
+        <Swiper
+          slidesPerView="auto"
+          spaceBetween={15}
+          freeMode
+          centeredSlides
+          centeredSlidesBounds
+          modules={[FreeMode]}
+          className="mt-4"
+        >
+          {TopPlays?.map((song, i) => (
+            <SwiperSlide
+              key={song?.key}
+              style={{ width: "25%", height: "auto" }}
+              className="shadow-lg rounded-full animate-slideright"
+            >
+              <Link to={`/artists/${song?.artists[0].adamid}`}>
+                <img
+                  src={song?.images.background}
+                  alt="name"
+                  className="rounded-full w-full object-cover"/>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );

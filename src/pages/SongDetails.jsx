@@ -1,40 +1,39 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { DetailsHeader, Error, Loader, RelatedSongs } from "../components";
-import { setActiveSong, playPause } from "../redux/features/playerSlice";
-import { useGetSongDetailsQuery } from "../redux/services/shazamCore";
+// src/pages/SongDetails.jsx
+
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetSongDetailsQuery } from '../redux/services/shazamCore';
+import DetailsHeader from '../components/DetailsHeader';
+import Loader from '../components/Loader';
+import Error from '../components/Error';
 
 const SongDetails = () => {
-  const dispatch = useDispatch();
-  const { songid, id: artistId } = useParams();
-  const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data: songData, isFetching: isFetchingSongDetails } =
-    useGetSongDetailsQuery({ songid });
+  const { songid } = useParams();
+  const { data: songData, isLoading, isError } = useGetSongDetailsQuery({ songid });
 
-  console.log(songid);
+  if (isLoading) {
+    return <Loader />;
+  }
 
-  const handlePauseClick = () => {
-    dispatch(playPause(false));
-  };
+  if (isError || !songData) {
+    return <Error message="Failed to fetch song details." />;
+  }
 
-  const handlePlayClick = (song, i) => {
-    dispatch(setActiveSong({ song, data, i }));
-    dispatch(playPause(true));
-  };
+  const lyricsSection = songData.sections?.find((section) => section.type === 'LYRICS');
 
   return (
     <div className="flex flex-col">
-      <DetailsHeader artistId={artistId} songData={songData} />
-      {/* <detailsHeader artistId={artistId} songData={songData} /> */}
+      <DetailsHeader songData={songData} />
       <div className="mb-10">
         <h2 className="text-white text-3xl font-bold">Lyrics:</h2>
-
         <div className="mt-5">
-          {songData?.sections[1].type === "LYRICS" 
-            ? songData?.sections[1]?.text.map((Line, i) => (
-              <p className="text-gray-400 text-base my-1">{Line}</p>
-            )) : <p className="text-gray-400 text-base my-1">Sorry, No lyrics found!</p>}
+          {lyricsSection ? (
+            lyricsSection.text.map((line, i) => (
+              <p className="text-gray-400 text-base my-1" key={i}>{line}</p>
+            ))
+          ) : (
+            <p className="text-gray-400 text-base my-1">Sorry, No lyrics found!</p>
+          )}
         </div>
       </div>
     </div>

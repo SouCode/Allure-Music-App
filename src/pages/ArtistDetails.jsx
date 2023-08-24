@@ -12,17 +12,24 @@ const ArtistDetails = () => {
 
   if (isFetchingArtistDetails) return <Loader title="Loading artist details..." />;
 
-  if (error) return <Error />;
+  if (error) {
+    console.error("Error fetching artist details:", error);
+    return <Error />;
+  }
+
+  // Ensure that the expected data structure is present
+  const artist = artistData?.data?.[0];
+  if (!artist) return <Error message="Artist data is not available." />;
 
   return (
     <div className="flex flex-col">
       <DetailsHeader
         artistId={artistId}
-        artistData={artistData?.data[0]}
+        artistData={artist}
       />
 
       <RelatedSongs
-        data={artistData?.data[0].views['top-songs']?.data}
+        data={artist.views?.['top-songs']?.data}
         artistId={artistId}
         isPlaying={isPlaying}
         activeSong={activeSong}

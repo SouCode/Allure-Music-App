@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const DetailsHeader = ({ artistId, artistData, songData }) => {
   // Check if the required data is available
@@ -9,8 +9,8 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
 
   const imageUrl = artistId
     ? artistData?.attributes?.artwork?.url
-        .replace('{w}', '500')
-        .replace('{h}', '500')
+        .replace("{w}", "500")
+        .replace("{h}", "500")
     : songData?.images?.coverart;
 
   const title = artistId ? artistData?.attributes?.name : songData?.title;
@@ -25,8 +25,8 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
 
       <div className="absolute inset-0 flex items-center">
         <img
-          alt="profile"
-          src={imageUrl}
+          alt="art"
+          src={imageUrl} // Use the imageUrl variable directly
           className="sm:w-48 w-28 sm:h-48 h-28 rounded-full object-cover border-2 shadow-xl shadow-black"
         />
 
@@ -38,9 +38,7 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
             </Link>
           )}
 
-          {genre && (
-            <p className="text-base text-gray-400 mt-2">{genre}</p>
-          )}
+          {genre && <p className="text-base text-gray-400 mt-2">{genre}</p>}
         </div>
       </div>
 

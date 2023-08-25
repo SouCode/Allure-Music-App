@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { DetailsHeader, Error, Loader, RelatedSongs } from '../components';
+import { DetailsHeader, Error, Loader } from '../components';
 
 import { useGetArtistDetailsQuery } from '../redux/services/shazamCore';
 
@@ -26,13 +26,6 @@ const ArtistDetails = () => {
       <DetailsHeader
         artistId={artistId}
         artistData={artist}
-      />
-
-      <RelatedSongs
-        data={artist.views?.['top-songs']?.data}
-        artistId={artistId}
-        isPlaying={isPlaying}
-        activeSong={activeSong}
       />
     </div>
   );

@@ -1,16 +1,16 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import {
-  useGetSongDetailsQuery,
-  useGetSongRelatedQuery,
-} from "../redux/services/shazamCore";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetSongDetailsQuery, useGetSongRelatedQuery } from '../redux/services/shazamCore';
+import { setActiveSong, playPause } from '../redux/features/playerSlice'; // Adjust the path as needed
+
 import DetailsHeader from "../components/DetailsHeader";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import RelatedSongs from "../components/RelatedSongs";
 
 const SongDetails = () => {
+  const dispatch = useDispatch();
   const { songid } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const {
@@ -34,11 +34,12 @@ const SongDetails = () => {
   );
 
   const handlePauseClick = () => {
-    // Define your pause logic here
+    dispatch(playPause(false));
   };
 
   const handlePlayClick = (song, i) => {
-    // Define your play logic here
+    dispatch(setActiveSong({ song, data: relatedSongs, i }));
+    dispatch(playPause(true));
   };
 
   return (
